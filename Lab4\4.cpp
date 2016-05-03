@@ -20,11 +20,11 @@ public:
 		if (n > hi) throw runtime_error("Out of borders");
 		low = n;
 	}
-	Number(const Number &n)
+	Number(const Number &n) // с таким поведением генерируется автоматически
 	{
 		low = n.low;
 	}
-	Number& operator = (Number &n)
+	Number& operator = (Number &n) // const param
 	{
 		low = n.low;
 		return(*this);
@@ -37,7 +37,7 @@ public:
 	{
 		return Number(low * n.low);
 	}
-	Number operator = (const Number &n)
+	Number operator = (const Number &n) // этот не лишний?
 	{
 		low = n.low;
 	}
@@ -67,18 +67,19 @@ public:
 		for(size_t i=0; i<M; i++)
 		{
 			T[i] = new Number[N];
-			copy(o.T[i], o.T[i]+ N*sizeof(Number), T[i]);
+			// include <algorithm> ?
+			copy(o.T[i], o.T[i]+ N*sizeof(Number), T[i]); // правильно o.T[i]+ N
 		}
 	};
-	size_t m()
+	size_t m() // const
 	{
 		return M;
 	};
-	size_t n()
+	size_t n() // const
 	{
 		return N;
 	};
-	matrix rotX(double a)
+	matrix rotX(double a) // что-то очень странное и работает только с матрицами 3*3
 	{
 		matrix r(3, 3);
 		r(0, 0) = Number(1);
@@ -112,7 +113,7 @@ public:
 	const Number& operator ()(size_t i, size_t j) const
 	{
 		if(NULL)
-			throw out_of_range("Matrix wasn't initialised");
+			throw out_of_range("Matrix wasn't initialised"); // такого не бывает. вы это обеспечиваете
 		if(i>M)
 			throw out_of_range("Index \"i\" is out of range");
 		if(j>N)
@@ -187,7 +188,7 @@ ostream& operator<<(ostream &out, const Number &n)
 	out << "(" << n.low << ")";
 	return out;
 }
-istream& operator>> (istream &in, Number &n)
+istream& operator>> (istream &in, Number &n) // ввод не соответствует выводу
 {
 	in >> n.low;
 	return in;
